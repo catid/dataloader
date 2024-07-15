@@ -19,7 +19,8 @@ Features:
 * Provisioning support scripts (`provision/`) provided using Ansible Playbooks to shard the dataset across a compute cluster.
 * Fully unit-tested and validated in real-world usage.
 
-Benchmark results:
+
+## Benchmark results:
 
 When pipelined with training, the dataloader takes approximately 0.01 milliseconds to read each microbatch, so basically it adds no delay to training.
 
