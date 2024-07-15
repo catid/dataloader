@@ -67,7 +67,7 @@ def generate_master_script(hosts, world_size, args):
 def main():
     parser = argparse.ArgumentParser(description="Generate a shell script to run a Python script on multiple hosts using pdsh.")
     parser.add_argument('--hosts-file', type=str, default="hosts.txt", help="Path to the hosts file (default: hosts.txt).")
-    parser.add_argument('--source-dir', type=str, default="~/dataloader/dataset", help="Source directory.")
+    parser.add_argument('--source-dir', type=str, default="~/dataloader", help="Source directory.")
     parser.add_argument('--conda-env', type=str, default="dataloader", help="Conda environment name.")
     parser.add_argument('--conda-dir', type=str, default="~/mambaforge", help="Conda environment directory.")
     parser.add_argument('--dataset-user', type=str, default="HuggingFaceFW", help="Dataset user.")

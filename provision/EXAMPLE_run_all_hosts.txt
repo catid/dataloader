@@ -1,3 +1,5 @@
+# This is an example of what the `make_shard_script.py` script generates.  It is not intended to be run directly.
+
 #!/bin/bash
 # Master script to execute shard_dataset.py on multiple hosts using parallel and pdsh
 
