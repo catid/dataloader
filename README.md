@@ -90,6 +90,8 @@ You can start from a specific step by setting the `start_step` parameter in the 
 
 Note that the validation split can also be loaded and stepped through using the same code, but a different `data_path`.
 
+For each epoch you can specify completely different settings: Larger batch sizes, longer contexts, and so on.
+
 
 ## Sharding
 
