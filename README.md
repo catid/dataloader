@@ -1,6 +1,8 @@
-# C++ Dataloader
+# The Catid Dataloader
 
-Optimized C++ dataloader for tokenized datasets.
+"I couldn't think of a better name." -catid
+
+Optimized C++ dataloader for tokenized datasets, with simple Python bindings.  Tested as part of my own language model training scripts and now releasing separately for others to use.
 
 Features:
 * All operations are fully pipelined with training for zero delay.
@@ -27,7 +29,7 @@ Per 12 CPU cores on an SSD with a (huge) batch of 128 and context size of 8192, 
 From Python it looks like this:
 
 ```python
-from cpp_dataloader import DataLoader, DataVerifier, EpochConfig
+from catid_dataloader import DataLoader, DataVerifier, EpochConfig
 
 loader = DataLoader(data_path)
 
@@ -49,12 +51,14 @@ while True:
         break
 ```
 
-## Setup
+## Manual Installation from Source
 
-Install the `cpp_dataloader` pip package:
+Build and install the `catid_dataloader` pip package:
 
 ```bash
 sudo apt install build-essential cmake
+
+conda create -n dataloader python=3.10 -y && conda activate dataloader
 
 ./install.sh
 ```
@@ -62,7 +66,7 @@ sudo apt install build-essential cmake
 Verify that it is working:
 
 ```bash
-python python test_cpp_dataloader.py
+python python test_catid_dataloader.py
 ```
 
 

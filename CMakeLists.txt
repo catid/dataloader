@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(cpp_dataloader_library C CXX)
+project(catid_dataloader_library C CXX)
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
 
@@ -18,24 +18,23 @@ else()
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -march=native")
 endif()
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 #find_package(Python3 REQUIRED COMPONENTS Interpreter Development NumPy)
 
+# Build Zstd from submodule
+set(ZSTD_BUILD_PROGRAMS OFF)
+set(ZSTD_BUILD_TESTS OFF)
+set(ZSTD_BUILD_STATIC ON)
+set(ZSTD_BUILD_SHARED OFF)
+add_subdirectory(zstd/build/cmake EXCLUDE_FROM_ALL)
+
 # Third-party source files
 file(GLOB_RECURSE URING_SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/uring/*.c")
 file(GLOB_RECURSE URING_HEADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}/uring/*.h")
-file(GLOB_RECURSE ZSTD_SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/zstd/*.c")
-file(GLOB_RECURSE ZSTD_HEADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}/zstd/*.h")
-
-if(CMAKE_SYSTEM_PROCESSOR MATCHES "AMD64|x86_64")
-    enable_language(ASM)
-    file(GLOB_RECURSE ZSTD_ASM_FILES "${CMAKE_CURRENT_SOURCE_DIR}/zstd/*.S")
-    list(APPEND ZSTD_SRC_FILES ${ZSTD_ASM_FILES})
-endif()
 
 file(GLOB_RECURSE DATALOADER_HEADER_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp")
@@ -51,8 +50,6 @@ add_library(${PROJECT_NAME} SHARED
     ryml/ryml.cpp
     ryml/ryml.hpp
     cpppath/cpppath.h
-    ${ZSTD_SRC_FILES}
-    ${ZSTD_HEADER_FILES}
     ${URING_SRC_FILES}
     ${URING_HEADER_FILES}
 )
@@ -63,13 +60,13 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/cityhash
     ${CMAKE_CURRENT_SOURCE_DIR}/cpppath
     ${CMAKE_CURRENT_SOURCE_DIR}/worker_pool
-    ${CMAKE_CURRENT_SOURCE_DIR}/zstd
     #${Python3_INCLUDE_DIRS}
     #${Python3_NumPy_INCLUDE_DIRS}
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC
     #${Python3_LIBRARIES}
     Threads::Threads
+    libzstd_static
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "") # remove lib prefix
 set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")

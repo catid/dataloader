@@ -1,6 +1,6 @@
 import random
 import time
-from cpp_dataloader import DataLoader, DataPreparation, DataVerifier, EpochConfig
+from catid_dataloader import DataLoader, DataPreparation, DataVerifier, EpochConfig
 import os
 
 import numpy as np

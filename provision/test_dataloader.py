@@ -3,7 +3,7 @@ import argparse
 import yaml
 import time
 
-from cpp_dataloader import DataLoader, DataVerifier, EpochConfig
+from catid_dataloader import DataLoader, DataVerifier, EpochConfig
 
 def read_yaml_file(file_path):
     with open(file_path, 'r') as file:

@@ -1,6 +1,4 @@
 include CMakeLists.txt
-include *.cpp
-include *.hpp
 recursive-include include *
 recursive-include src *
 recursive-include uring *

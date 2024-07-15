@@ -20,7 +20,7 @@ class EpochConfig:
 site_packages_paths = site.getsitepackages()
 
 # Assuming the .so file is in the first site-packages path found
-so_file_name = "cpp_dataloader_library.so"
+so_file_name = "catid_dataloader_library.so"
 lib_path = None
 for path in site_packages_paths:
     potential_path = os.path.join(path, so_file_name)
@@ -30,7 +30,7 @@ for path in site_packages_paths:
 
 # Ensure the library path is correct and exists
 if not lib_path:
-    raise FileNotFoundError(f"Shared library not found. Please read the cpp_dataloader/README.md instructions.")
+    raise FileNotFoundError(f"Shared library not found. Please read the catid_dataloader/README.md instructions.")
 
 # Load the shared library
 lib = ctypes.CDLL(lib_path)

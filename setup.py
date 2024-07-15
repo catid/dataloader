@@ -30,13 +30,13 @@ class CMakeBuild(build_ext):
         subprocess.check_call(["cmake", "--build", self.build_temp] + build_args)
 
 setup(
-    name="cpp_dataloader",
-    version="0.1.0",
+    name="catid_dataloader",
+    version="0.2.0",
     python_requires='>=3',
-    ext_modules=[CMakeExtension("cpp_dataloader")],
+    ext_modules=[CMakeExtension("catid_dataloader")],
     cmdclass={"build_ext": CMakeBuild},
     package_data={
-        'cpp_dataloader': ['cpp_dataloader_library.so'],
+        'catid_dataloader': ['catid_dataloader_library.so'],
     },
     include_package_data=True,
     package_dir={'': 'python_src'},
