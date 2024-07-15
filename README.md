@@ -146,7 +146,7 @@ make -j
 
 ## Discussion
 
-It's a good fit for speeding tokens/second training throughput for small-scale LM experiments (concatenating short strings, pipelining/parallelism).  The defaults for sharding are FineWeb-Edu with tiktoken 50k vocab but it supports any n_vocab or even just plain text.
+It's a good fit for improving tokens/second training throughput for small-scale LM experiments (concatenating short strings, pipelining/parallelism).  The defaults for sharding are FineWeb-Edu with tiktoken 50k vocab but it supports any n_vocab or even just plain text.
 
 It also has a few rare features like how it flags whether or not each batch row is a continuation from the previous context.  This means you can do more unusual-but-interesting things like carrying-over SSM state between contexts when doing gradient accumulation.
 
