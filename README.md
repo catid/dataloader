@@ -16,6 +16,7 @@ Features:
 * Supports fast checkpoint resume by skipping ahead a specified number of steps without re-reading.
 * Short strings are concatenated and separated by padding tokens to improve training throughput.
 * Supports seeded random access for reproducibility.
+* Provisioning support scripts (`provision/`) provided using Ansible Playbooks to shard the dataset across a compute cluster.
 * Fully unit-tested and validated in real-world usage.
 
 Benchmark results:
