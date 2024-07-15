@@ -1,0 +1,84 @@
+---
+- name: Set up dataloader environment
+  hosts: all
+  become: no
+  vars_files:
+    - sudo.yml
+  tasks:
+    - name: Install apt package build-essential
+      become: yes
+      ansible.builtin.apt:
+        name: build-essential
+        state: present
+        update_cache: yes
+
+    - name: Install apt package cmake
+      become: yes
+      ansible.builtin.apt:
+        name: cmake
+        state: present
+
+    - name: Install OpenMPI library
+      become: yes
+      ansible.builtin.apt:
+        name: libopenmpi-dev
+        state: present
+
+    - name: Install git-lfs
+      become: yes
+      ansible.builtin.apt:
+        name: git-lfs
+        state: present
+
+    - name: Check if dataloader repository exists
+      ansible.builtin.stat:
+        path: "{{ lookup('env', 'HOME') }}/dataloader"
+      register: dataloader_repository
+
+    - name: Add github.com to known_hosts
+      ansible.builtin.known_hosts:
+        name: github.com
+        key: "{{ lookup('pipe', 'ssh-keyscan github.com') }}"
+        state: present
+        path: "{{ lookup('env', 'HOME') }}/.ssh/known_hosts"
+
+    - name: Clone dataloader repository
+      ansible.builtin.git:
+        repo: https://github.com/catid/dataloader
+        dest: "{{ lookup('env', 'HOME') }}/dataloader"
+        update: yes
+
+    - name: Initialize git-lfs
+      shell: |
+        cd "{{ lookup('env', 'HOME') }}/dataloader"
+        git lfs install
+
+    - name: Check if dataloader conda environment exists
+      ansible.builtin.shell:
+        cmd: "{{ lookup('env', 'HOME') }}/mambaforge/bin/conda env list | grep dataloader"
+      register: conda_env_output
+      ignore_errors: true
+
+    - name: Remove existing dataloader conda environment
+      ansible.builtin.shell:
+        cmd: "{{ lookup('env', 'HOME') }}/mambaforge/bin/conda env remove -n dataloader"
+      when: conda_env_output.rc == 0
+
+    - name: Create dataloader conda environment and install dependencies
+      block:
+        - name: Create conda environment
+          ansible.builtin.shell:
+            cmd: "{{ lookup('env', 'HOME') }}/mambaforge/bin/conda create -y --name dataloader python=3.10"
+
+        - name: Install packaging module
+          shell: |
+            "{{ lookup('env', 'HOME') }}/mambaforge/envs/dataloader/bin/pip" install packaging
+
+        - name: Upgrade pip and setuptools
+          shell: |
+            "{{ lookup('env', 'HOME') }}/mambaforge/envs/dataloader/bin/pip" install --upgrade pip setuptools
+
+        - name: Install pip requirements.txt
+          shell: |
+            cd "{{ lookup('env', 'HOME') }}/dataloader"
+            "{{ lookup('env', 'HOME') }}/mambaforge/envs/dataloader/bin/pip" install -U -r requirements.txt

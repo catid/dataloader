@@ -1,0 +1,3 @@
+# Should work with numpy>=2.0, but there were conflicts with other packages I was using while testing
+numpy<2.0
+catid_dataloader

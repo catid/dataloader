@@ -89,6 +89,11 @@ Each value returned will be `None` if the dataset is exhausted.
 You can start from a specific step by setting the `start_step` parameter in the `EpochConfig` object, for resuming training from a checkpoint.  Note that the `context_size`, `micro_batch_size`, `min_data_length`, `local_rank`, `local_rank_count`, `seed0` and `seed1` parameters must be set to the same value as when the checkpoint was created, as otherwise the data at each step will not match the previous training run.
 
 
+## Sharding
+
+The `provision` directory contains scripts to download and shard datasets on multiple remote hosts using this package.
+
+
 ## Manual Installation from Source
 
 Build and install the `catid_dataloader` pip package:
