@@ -143,6 +143,26 @@ make -j
 ```
 
 
+## Discussion
+
+It's a good fit for speeding up training for small-scale LM experiments (concatenating short strings, pipelining/parallelism).  So you train much faster.  The defaults for sharding are FineWeb-Edu with tiktoken 50k vocab but it supports any n_vocab or even just plain text.
+
+It also has a few rare features like how it flags whether or not each batch row is a continuation from the previous context.  This means you can do more unusual-but-interesting things like carrying-over SSM state between contexts when doing gradient accumulation.
+
+The compression features are good for saving disk space since these datasets are pretty large now.  With 4 training machines it takes under 600GB per node for FineWeb-Edu, so you don't need to buy a lot of expensive SSDs for your training machines.
+
+And if you want to be really safe, there's a fairly fast (~30 seconds) dataset verifier you can run before starting a training run, from Python.
+
+
+## Future Work
+
+TODO:
+
+* Add support for returning the list of concatenated samples in flash_attn format
+* Add support for DCLM-Baseline 4T: https://huggingface.co/datasets/mlfoundations/dclm-baseline-1.0
+* Add support for other tokenizers/datasets as people make requests for them in issue tickets
+
+
 ## Credits
 
 Latest versions of third-party libraries are included:
