@@ -10,7 +10,6 @@ import tempfile
 import yaml
 import tiktoken
 from catid_dataloader import DataPreparation
-import torch
 from logger_tt import setup_logging, logger
 
 setup_logging(use_multiprocessing="fork")
@@ -271,9 +270,6 @@ def main():
     parser.add_argument('--holdout-rate', type=float, default=0.1, help="Percentage to use for holdout set.")
 
     args = parser.parse_args()
-
-    if args.rank_count != torch.cuda.device_count():
-        raise RuntimeError("Your --rank_count parameter must match the number of GPUs. Check your `hosts.txt` file configuration.")
 
     delete_folder_contents(args.output_dir)
     delete_folder_contents(args.holdout_dir)

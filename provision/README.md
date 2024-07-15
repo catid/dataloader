@@ -4,6 +4,10 @@ The scripts convert downloaded HuggingFace datasets into our format by tokenizin
 
 Currently the `shard_dataset.py` script only works for HuggingFace datasets made up of Parquet files.  It is tested on Fineweb-Edu only so far.
 
+Currently it only supports `tiktoken` tokenization and the default is `p50k_base` (n_vocab=50k).  If you need to use another tokenizer, you can modify the `shard_dataset.py` script to use your own tokenizer.  The dataloader package is agnostic to the tokenizer you use, but the sharding script needs to convert text to tokens.
+
+There are many different tokenizers and datasets available out there each with their own peculiarities, so it is normal to need to customize the sharding script to your needs.  The provided defaults are the best ones I have found so far, for small-scale experiments.
+
 
 ## Setup
 
