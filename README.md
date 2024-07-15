@@ -152,7 +152,7 @@ It also has a few rare features like how it flags whether or not each batch row 
 
 The compression features are good for saving disk space since these datasets are pretty large now.  With 4 training machines it takes under 600GB per node for FineWeb-Edu, so you don't need to buy a lot of expensive SSDs for your training machines.
 
-And if you want to be really safe, there's a fairly fast (~30 seconds) dataset verifier you can run from Python before starting training.
+And if you want to be really safe, there's a fairly fast (~30 seconds) dataset verifier you can run from Python before starting training.  Aside from data verification all other operations are so fast they're basically free, like resuming from checkpoint jumps straight to the next data item without any delay.
 
 
 ## Future Work
