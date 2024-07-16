@@ -14,12 +14,15 @@ Features:
 * Uses an index file to accelerate data lookup.
 * Hash to verify entire dataset integrity quickly.
 * Supports fast checkpoint resume by skipping ahead a specified number of steps without re-reading.
-* Short strings are concatenated and separated by padding tokens to improve training throughput.
+* Short strings are concatenated and separated by padding tokens to improve tokens/second throughput.
 * Supports seeded random access for reproducibility.
+* Provisioning support scripts (`provision/`) provided using Ansible Playbooks to shard the dataset across a compute cluster.
+* Fully unit-tested and validated in real-world usage.
 
 Released under BSD 3-Clause License for unrestricted use in commercial and open-source software.
 
-Benchmark results:
+
+## Benchmark results:
 
 When pipelined with training, the dataloader takes approximately 0.01 milliseconds to read each microbatch, so basically it adds no delay to training.
 
@@ -90,6 +93,10 @@ Each value returned will be `None` if the dataset is exhausted.
 
 You can start from a specific step by setting the `start_step` parameter in the `EpochConfig` object, for resuming training from a checkpoint.  Note that the `context_size`, `micro_batch_size`, `min_data_length`, `local_rank`, `local_rank_count`, `seed0` and `seed1` parameters must be set to the same value as when the checkpoint was created, as otherwise the data at each step will not match the previous training run.
 
+Note that the validation split can also be loaded and stepped through using the same code, but a different `data_path`.
+
+For each epoch you can specify completely different configuration: Larger batch sizes, longer contexts, and so on.  You can also start a new epoch before finishing the previous one.
+
 
 ## Sharding
 
@@ -137,6 +144,26 @@ make -j
 ./test_data_prep
 ./test_data_loader
 ```
+
+
+## Discussion
+
+It's a good fit for improving tokens/second training throughput for small-scale LM experiments (concatenating short strings, pipelining/parallelism).  The defaults for sharding are FineWeb-Edu with tiktoken 50k vocab but it supports any n_vocab or even just plain text.
+
+It also has a few rare features like how it flags whether or not each batch row is a continuation from the previous context.  This means you can do more unusual-but-interesting things like carrying-over SSM state between contexts when doing gradient accumulation.
+
+The compression features are good for saving disk space since these datasets are pretty large now.  With 4 training machines it takes under 600GB per node for FineWeb-Edu, so you don't need to buy a lot of expensive SSDs for your training machines.
+
+And if you want to be really safe, there's a fairly fast (~30 seconds) dataset verifier you can run from Python before starting training.  Aside from data verification all other operations are so fast they're basically free, like resuming from checkpoint jumps straight to the next data item without any delay.
+
+
+## Future Work
+
+TODO:
+
+* Add support for returning the list of concatenated samples in flash_attn format
+* Add support for DCLM-Baseline 4T: https://huggingface.co/datasets/mlfoundations/dclm-baseline-1.0
+* Add support for other tokenizers/datasets as people make requests for them in issue tickets
 
 
 ## Credits
