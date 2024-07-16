@@ -17,6 +17,8 @@ Features:
 * Short strings are concatenated and separated by padding tokens to improve training throughput.
 * Supports seeded random access for reproducibility.
 
+Released under BSD 3-Clause License for unrestricted use in commercial and open-source software.
+
 Benchmark results:
 
 When pipelined with training, the dataloader takes approximately 0.01 milliseconds to read each microbatch, so basically it adds no delay to training.
