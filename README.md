@@ -166,7 +166,7 @@ TODO:
 * Add support for other tokenizers/datasets as people make requests for them in issue tickets
 
 
-## Credits
+## Acknowledgements
 
 Latest versions of third-party libraries are included:
 
